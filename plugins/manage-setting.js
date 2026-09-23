@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 // ERFAN-MD 
 
 // ImgBB API Key (free, working)
-const IMGBB_API_KEY = '8db492efc937a635b90680a9a860dc85';
+const IMGBB_API_KEY = 'b63a821d989cdf895808a44aa5b76c33';
 
 // Helper function to extract number from JID
 function extractNumber(jid) {
