@@ -10,11 +10,11 @@ const __filename = fileURLToPath(import.meta.url);
 
 // Multiple ImgBB API Keys (fallback system)
 const IMGBB_API_KEYS = [
-  'ebb2d6cad946fa45d7d9c4cc7dfa87e3',
-  'b9b79efc2a2cf5380b57974bba4ce6d4',
-  '9f47b49c2c1ea0bdb3f4acc4ebde2119',
-  'a7c9712190de7a0d3c27e12ac5e4c3da',
-  '55ec55ce1c92a23b47d958a1db63c486'
+  'fb92e9929582dc7c12b873fafe7b632c',
+  '565e1bab7de2b9d897f15bddd815659c',
+  'fa7749fb726c3826805cd2f0fa34f749',
+  '5b0a862fec98947c695b11fffdd0fbad',
+  'b63a821d989cdf895808a44aa5b76c33'
 ];
 
 // Function to upload with fallback API keys
