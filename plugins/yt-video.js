@@ -1,5 +1,4 @@
 
-
 import { fileURLToPath } from 'url';
 import { cmd } from '../command.js';
 import axios from 'axios';
@@ -24,7 +23,31 @@ function getVideoId(url) {
 }
 
 // ============================================
-// COMMAND: play (Auto Audio) - Uses /ytx first
+// SHARED: Audio API list (A8 → A9 → A7 → A6 → A1 → A2 → A3 → A4 → A5)
+// ============================================
+const getAudioAPIs = (url) => [
+    { url: `${API_BASE}/yta8?url=${encodeURIComponent(url)}`, timeout: 15000 },
+    { url: `${API_BASE}/yta9?url=${encodeURIComponent(url)}`, timeout: 15000 },
+    { url: `${API_BASE}/yta7?url=${encodeURIComponent(url)}`, timeout: 15000 },
+    { url: `${API_BASE}/yta6?url=${encodeURIComponent(url)}`, timeout: 15000 },
+    { url: `${API_BASE}/yta1?url=${encodeURIComponent(url)}`, timeout: 15000 },
+    { url: `${API_BASE}/yta2?url=${encodeURIComponent(url)}`, timeout: 15000 },
+    { url: `${API_BASE}/yta3?url=${encodeURIComponent(url)}`, timeout: 15000 },
+    { url: `${API_BASE}/yta4?url=${encodeURIComponent(url)}`, timeout: 15000 },
+    { url: `${API_BASE}/yta5?url=${encodeURIComponent(url)}`, timeout: 15000 }
+];
+
+// ============================================
+// SHARED: Video API list (V3 → V1 → V2)
+// ============================================
+const getVideoAPIs = (url) => [
+    `${API_BASE}/ytv3?url=${encodeURIComponent(url)}`,
+    `${API_BASE}/ytv1?url=${encodeURIComponent(url)}`,
+    `${API_BASE}/ytv2?url=${encodeURIComponent(url)}`
+];
+
+// ============================================
+// COMMAND: play (Auto Audio)
 // ============================================
 cmd({
     pattern: "play",
@@ -69,17 +92,7 @@ cmd({
         let audioUrl = null;
         let success = false;
 
-        // ⏱️ All audio APIs: 15s timeout
-        const audioAPIs = [
-            { url: `${API_BASE}/ytx?url=${encodeURIComponent(url)}`, timeout: 15000 },
-            { url: `${API_BASE}/yta6?url=${encodeURIComponent(url)}`, timeout: 15000 },
-            { url: `${API_BASE}/yta7?url=${encodeURIComponent(url)}`, timeout: 15000 },
-            { url: `${API_BASE}/yta1?url=${encodeURIComponent(url)}`, timeout: 15000 },
-            { url: `${API_BASE}/yta2?url=${encodeURIComponent(url)}`, timeout: 15000 },
-            { url: `${API_BASE}/yta3?url=${encodeURIComponent(url)}`, timeout: 15000 },
-            { url: `${API_BASE}/yta4?url=${encodeURIComponent(url)}`, timeout: 15000 },
-            { url: `${API_BASE}/yta5?url=${encodeURIComponent(url)}`, timeout: 15000 }
-        ];
+        const audioAPIs = getAudioAPIs(url);
 
         for (const api of audioAPIs) {
             if (!success) {
@@ -119,7 +132,7 @@ cmd({
 });
 
 // ============================================
-// COMMAND: video (Video Download) - NO TIMEOUT
+// COMMAND: video (Video Download)
 // ============================================
 cmd({
     pattern: "video",
@@ -164,13 +177,7 @@ cmd({
         let videoUrl = null;
         let success = false;
 
-        // ⏱️ No timeout on video APIs
-        const videoAPIs = [
-            `${API_BASE}/ytv1?url=${encodeURIComponent(url)}`,
-            `${API_BASE}/ytv2?url=${encodeURIComponent(url)}`,
-            `${API_BASE}/ytv3?url=${encodeURIComponent(url)}`,
-            `${API_BASE}/ytv4?url=${encodeURIComponent(url)}`
-        ];
+        const videoAPIs = getVideoAPIs(url);
 
         for (const apiUrl of videoAPIs) {
             if (!success) {
@@ -285,17 +292,7 @@ cmd({
                         let audioUrl = null;
                         let success = false;
 
-                        // ⏱️ All audio APIs: 15s timeout
-                        const audioAPIs = [
-                            { url: `${API_BASE}/ytx?url=${encodeURIComponent(vid.url)}`, timeout: 15000 },
-                            { url: `${API_BASE}/yta6?url=${encodeURIComponent(vid.url)}`, timeout: 15000 },
-                            { url: `${API_BASE}/yta7?url=${encodeURIComponent(vid.url)}`, timeout: 15000 },
-                            { url: `${API_BASE}/yta1?url=${encodeURIComponent(vid.url)}`, timeout: 15000 },
-                            { url: `${API_BASE}/yta2?url=${encodeURIComponent(vid.url)}`, timeout: 15000 },
-                            { url: `${API_BASE}/yta3?url=${encodeURIComponent(vid.url)}`, timeout: 15000 },
-                            { url: `${API_BASE}/yta4?url=${encodeURIComponent(vid.url)}`, timeout: 15000 },
-                            { url: `${API_BASE}/yta5?url=${encodeURIComponent(vid.url)}`, timeout: 15000 }
-                        ];
+                        const audioAPIs = getAudioAPIs(vid.url);
 
                         for (const api of audioAPIs) {
                             if (!success) {
@@ -340,13 +337,7 @@ cmd({
                         let videoUrl = null;
                         let success = false;
 
-                        // ⏱️ No timeout on video APIs
-                        const videoAPIs = [
-                            `${API_BASE}/ytv1?url=${encodeURIComponent(vid.url)}`,
-                            `${API_BASE}/ytv2?url=${encodeURIComponent(vid.url)}`,
-                            `${API_BASE}/ytv3?url=${encodeURIComponent(vid.url)}`,
-                            `${API_BASE}/ytv4?url=${encodeURIComponent(vid.url)}`
-                        ];
+                        const videoAPIs = getVideoAPIs(vid.url);
 
                         for (const apiUrl of videoAPIs) {
                             if (!success) {
@@ -409,7 +400,7 @@ cmd({
 });
 
 // ============================================
-// COMMAND: drama (Video Only - Interactive) - NO TIMEOUT
+// COMMAND: drama (Video Only - Interactive)
 // ============================================
 cmd({
     pattern: "drama",
@@ -482,13 +473,7 @@ cmd({
                     let videoUrl = null;
                     let success = false;
 
-                    // ⏱️ No timeout on video APIs
-                    const videoAPIs = [
-                        `${API_BASE}/ytv1?url=${encodeURIComponent(vid.url)}`,
-                        `${API_BASE}/ytv2?url=${encodeURIComponent(vid.url)}`,
-                        `${API_BASE}/ytv3?url=${encodeURIComponent(vid.url)}`,
-                        `${API_BASE}/ytv4?url=${encodeURIComponent(vid.url)}`
-                    ];
+                    const videoAPIs = getVideoAPIs(vid.url);
 
                     for (const apiUrl of videoAPIs) {
                         if (!success) {
@@ -555,7 +540,7 @@ cmd({
 cmd({
     pattern: "yts",
     alias: ["ytsearch", "searchyt"],
-    use: '.yts erfan',
+    use: '.yts ERFAN',
     react: "🔎",
     desc: "Search YouTube and get video details",
     category: "search",
